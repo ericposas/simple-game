@@ -34,21 +34,20 @@ window.start = () => {
 					sword.classList.remove('sword-attack-left')
 				}, 500)
 			}
-			// check if player is close enough to hit
-			if (parseInt(getCssProp(enemy, 'left')) - parseInt(getCssProp(player, 'left')) < 25 &&
-					parseInt(getCssProp(enemy, 'left')) - parseInt(getCssProp(player, 'left')) > 2 &&
-					isFacing === 'right') {
-						console.log('enemy hit!')
-			}
-			// console.log(
-			// 	parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) < 25,
-			// 	parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) > 2,
-			// 	isFacing
-			// );
-			if (parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) < 25 &&
-					parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) > 2 &&
-					isFacing === 'left') {
-						console.log('enemy hit!')
+			// check if player if close enough to hit on y axis (top / bottom)
+			if (parseInt(getCssProp(enemy, 'top')) - parseInt(getCssProp(player, 'top')) < 5 &&
+					parseInt(getCssProp(player, 'top')) - parseInt(getCssProp(enemy, 'top')) < 5) {
+						// check if player is close enough to hit on left / right sides
+						if (parseInt(getCssProp(enemy, 'left')) - parseInt(getCssProp(player, 'left')) < 20 &&
+						parseInt(getCssProp(enemy, 'left')) - parseInt(getCssProp(player, 'left')) > 0 &&
+						isFacing === 'right') {
+							console.log('enemy hit!')
+						}
+						if (parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) < 20 &&
+						parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) > 0 &&
+						isFacing === 'left') {
+							console.log('enemy hit!')
+						}
 			}
 			//
 			lastAttack = Date.now()
