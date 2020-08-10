@@ -1,79 +1,45 @@
-import * as d3 from 'd3'
+import random from 'random'
 import './style.scss'
 import { procPlayerControls } from './controls/playerControls'
 import { getCssProp } from './helpers/utils'
-import { enemyHitEvent } from './events/Events'
-
-// next, need to add enemy AI and attackHandler checking for all enemies on screen
+import { enemyHitEvent, winEvent } from './events/Events'
+import {
+	winHandler,
+	attackHandler
+} from './handlers/Handlers'
+import {
+	buildUI,
+	addPlayer,
+	declareGlobals
+} from './dom/DomFunctions'
 
 
 window.start = () => {
 
-	// init
+	let width = 700, height = 500
 	let keysDown = []
-	let lastAttack = 0
-	window.isFacing = 'right'
 
-	let player = document.getElementById('player')
-	let sword = document.getElementById('sword')
-	let enemy = document.getElementById('enemy')
-	player.style.left = '40px'
-	enemy.style.left = '140px'
-	player.style.top = enemy.style.top = '100px'
+	declareGlobals()
 
-	function attackHandler(e) {
-		if (Date.now() - lastAttack > 500) { // do nothing is last attack was less than n ms ago
-			console.log('player is attacking!')
-			// play sword animation class
-			if (isFacing === 'right') {
-				sword.classList.add('sword-attack-right')
-				setTimeout(() => {
-					sword.classList.remove('sword-attack-right')
-				}, 500)
-			} else {
-				sword.classList.add('sword-attack-left')
-				setTimeout(() => {
-					sword.classList.remove('sword-attack-left')
-				}, 500)
-			}
-			// check if player if close enough to hit on y axis (top / bottom)
-			if (parseInt(getCssProp(enemy, 'top')) - parseInt(getCssProp(player, 'top')) < 5 &&
-					parseInt(getCssProp(player, 'top')) - parseInt(getCssProp(enemy, 'top')) < 5) {
-						// check if player is close enough to hit on left / right sides
-						if (parseInt(getCssProp(enemy, 'left')) - parseInt(getCssProp(player, 'left')) < 20 &&
-						parseInt(getCssProp(enemy, 'left')) - parseInt(getCssProp(player, 'left')) > 0 &&
-						isFacing === 'right') {
-							console.log('enemy hit!')
-							document.dispatchEvent(enemyHitEvent)
-						}
-						if (parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) < 20 &&
-						parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) > 0 &&
-						isFacing === 'left') {
-							console.log('enemy hit!')
-							document.dispatchEvent(enemyHitEvent)
-						}
-			}
-			//
-			lastAttack = Date.now()
-		}
-	}
+	// add enemies to stage in random positions
+	enemies.forEach((en, i) => {
+		stage.appendChild(en.htmlElement)
+		en.htmlElement.style.left = random.int(20, 680)+'px'
+		en.htmlElement.style.top = random.int(20, 480 - 75)+'px'
+		// if (i == 3) en.doThing() // just testing our internal enemy functions..
+		// document.addEventListener('enemy hit', enemyHitHandler.bind(en))
+	})
 
-	function enemyHitHandler(e) {
-		console.log(this)
-		document.getElementById('stage').removeChild(this)
-	}
+	buildUI()
+	addPlayer()
 
-	document.addEventListener('enemy hit', enemyHitHandler.bind(enemy))
-
+	// add listeners
+	document.addEventListener('win', winHandler)
 	document.addEventListener('player attack', attackHandler)
-
 	document.addEventListener('keydown', e => {
 		if (keysDown.indexOf(e.keyCode) < 0) { // if keyCode doesn't exist in keysDown array, add it
 			keysDown.push(e.keyCode)
 		}
-		console.log(keysDown)
-		// keyDown = e.keyCode
-		// console.log(e.keyCode)
 	})
 	// Our player would stop moving if we had two keys down,
 	// and suddenly lifted off of one key. Storing the simultaneous
@@ -87,15 +53,15 @@ window.start = () => {
 				.concat(keysDown.slice(0, keysDown.indexOf(e.keyCode)))
 				.concat(keysDown.slice(keysDown.indexOf(e.keyCode)+1, keysDown.length))
 		}
-		console.log(keysDown)
 	})
-
 
 	function gameLoop(delta) {
 
-		procPlayerControls(keysDown, sword)
-
-		requestAnimationFrame(gameLoop) // update / render
+		if (gameState == 'play') {
+			if (killCount == enemyCount) { document.dispatchEvent(winEvent) }
+			procPlayerControls(keysDown, sword)
+			requestAnimationFrame(gameLoop) // update / render
+		}
 
 	}
 

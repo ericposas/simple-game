@@ -2,11 +2,46 @@ html, body {
 	margin: 0;
 }
 
+#win {
+	font-size: 100px;
+	text-align: center;
+	font-family: arial;
+	position: absolute;
+	color: blue;
+	top: 140px;
+	left: 0;
+	right: 0;
+}
+
+#ui {
+	width: 700px;
+	height: 75px;
+	background-color: #999;
+	margin-top: calc(500px - 75px);
+	border-radius: 3px;
+}
+
+#kill-count {
+	width: 200px;
+	height: 61px;
+	background-color: #ccc;
+	position: relative;
+	top: 7px;
+	left: 7px;
+}
+
+#kill-count-words {
+	font-family: arial;
+	font-size: 14px;
+	margin: 5px;
+}
+
 #stage {
 	width: 700px;
 	height: 500px;
 	border: 1px solid #000;
 	margin: 10px;
+	position: relative;
 }
 
 #player {
@@ -33,11 +68,18 @@ html, body {
 }
 
 .sword-attack-right {
-	animation: sword-animation-right .5s ease-out;
+	animation: sword-animation-right .35s ease-out;
 }
 
 .sword-attack-left {
-	animation: sword-animation-left .5s ease-out;
+	animation: sword-animation-left .35s ease-out;
+}
+
+.enemy {
+	width: 10px;
+	height: 10px;
+	background-color: red;
+	position: absolute;
 }
 
 @keyframes sword-animation-right {
@@ -96,9 +138,31 @@ html, body {
 	}
 }
 
-#enemy {
-	width: 10px;
-	height: 10px;
-	background-color: red;
-	position: absolute;
+.enemy-hit {
+	animation: enemy-hit .35s ease-out;
+}
+
+@keyframes enemy-hit {
+	0% {
+		transform: rotate(20deg);
+	}
+	20% {
+		transform: rotate(-20deg);
+	}
+	40% {
+		transform: rotate(20deg);
+	}
+	60% {
+		transform: rotate(-20deg);
+	}
+	80% {
+		transform: rotate(20deg);
+	}
+	90% {
+		transform: rotate(-20deg);
+	}
+	100% {
+		transform: rotate(-180deg);
+	}
+
 }
