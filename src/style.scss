@@ -1,0 +1,104 @@
+html, body {
+	margin: 0;
+}
+
+#stage {
+	width: 700px;
+	height: 500px;
+	border: 1px solid #000;
+	margin: 10px;
+}
+
+#player {
+	width: 10px;
+	height: 10px;
+	background-color: blue;
+	position: absolute;
+}
+
+#sword {
+	width: 8px;
+	height: 2px;
+	background-color: blue;
+	position: relative;
+	top: 4px;
+}
+
+.sword-right {
+	left: 10px;
+}
+
+.sword-left {
+	left: -8px;
+}
+
+.sword-attack-right {
+	animation: sword-animation-right .5s ease-out;
+}
+
+.sword-attack-left {
+	animation: sword-animation-left .5s ease-out;
+}
+
+@keyframes sword-animation-right {
+	0% {
+		transform: rotate(-120deg);
+		top: 0px;
+		left: 4px;
+	}
+	40% {
+		transform: rotate(-120deg);
+		top: 2px;
+		left: 10px;
+	}
+	70% {
+		transform: rotate(60deg);
+		top: 8px;
+		left: 14px;
+	}
+	90% {
+		transform: rotate(20deg);
+		top: 4px;
+		left: 10px;
+	}
+	100% {
+		transform: rotate(-20deg);
+		top: 2px;
+		left: 8px;
+	}
+}
+
+@keyframes sword-animation-left {
+	0% {
+		transform: rotate(120deg);
+		top: 0px;
+		left: -4px;
+	}
+	40% {
+		transform: rotate(120deg);
+		top: 2px;
+		left: -8px;
+	}
+	70% {
+		transform: rotate(-60deg);
+		top: 8px;
+		left: -12px;
+	}
+	90% {
+		transform: rotate(-20deg);
+		top: 4px;
+		left: -10px;
+	}
+	100% {
+		transform: rotate(20deg);
+		top: 2px;
+		left: -8px;
+	}
+}
+
+#enemy {
+	width: 10px;
+	height: 10px;
+	background-color: red;
+	position: absolute;
+}
