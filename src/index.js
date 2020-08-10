@@ -2,7 +2,9 @@ import * as d3 from 'd3'
 import './style.scss'
 import { procPlayerControls } from './controls/playerControls'
 import { getCssProp } from './helpers/utils'
-// import Events from './events/Events'
+import { enemyHitEvent } from './events/Events'
+
+// next, need to add enemy AI and attackHandler checking for all enemies on screen
 
 
 window.start = () => {
@@ -42,11 +44,13 @@ window.start = () => {
 						parseInt(getCssProp(enemy, 'left')) - parseInt(getCssProp(player, 'left')) > 0 &&
 						isFacing === 'right') {
 							console.log('enemy hit!')
+							document.dispatchEvent(enemyHitEvent)
 						}
 						if (parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) < 20 &&
 						parseInt(getCssProp(player, 'left')) - parseInt(getCssProp(enemy, 'left')) > 0 &&
 						isFacing === 'left') {
 							console.log('enemy hit!')
+							document.dispatchEvent(enemyHitEvent)
 						}
 			}
 			//
@@ -54,7 +58,15 @@ window.start = () => {
 		}
 	}
 
+	function enemyHitHandler(e) {
+		console.log(this)
+		document.getElementById('stage').removeChild(this)
+	}
+
+	document.addEventListener('enemy hit', enemyHitHandler.bind(enemy))
+
 	document.addEventListener('player attack', attackHandler)
+
 	document.addEventListener('keydown', e => {
 		if (keysDown.indexOf(e.keyCode) < 0) { // if keyCode doesn't exist in keysDown array, add it
 			keysDown.push(e.keyCode)
